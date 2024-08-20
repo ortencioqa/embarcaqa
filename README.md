@@ -23,7 +23,7 @@ Este guia fornece instruções para configurar e executar o projeto Cypress cria
    ```bash
    Digitar o código abaixo no Terminal.
    npx cypress open
-   Selecionar Specs "cypress -> e2e -> embarca -> end2endEmbarca.cy.js e acompanhar a automação de teste. 
+   Selecionar Specs "cypress -> e2e -> embarca -> end2endEmbarca.cy.js" agora é somente acompanhar a automação de teste. 
    ```
 
 Seus testes Cypress estão configurados e prontos para serem executados.
