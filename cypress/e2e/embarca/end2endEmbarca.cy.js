@@ -56,7 +56,7 @@ describe("Fluxo de Busca de Passagens", () => {
 
     // Reserva a poltrona IDA
     cy.get(
-      ':nth-child(2) > .mb-4 > .bus-container > .first-floor-map > .fade-wrapper > .seats > :nth-child(4) > [data-number="3"]'
+      ':nth-child(2) > .mb-4 > .bus-container > .first-floor-map > .fade-wrapper > .seats > :nth-child(1) > [data-number="1"]'
     ).click();
 
     // Espera a seleção da poltrona ser processada
@@ -73,7 +73,7 @@ describe("Fluxo de Busca de Passagens", () => {
 
     //Seleciona a poltrona Volta
     cy.get(
-      ':nth-child(2) > .mb-4 > .bus-container > .first-floor-map > .fade-wrapper > .seats > :nth-child(4) > [data-number="3"]'
+      ':nth-child(2) > .mb-4 > .bus-container > .first-floor-map > .fade-wrapper > .seats > :nth-child(1) > [data-number="1"]'
     ).click();
 
     //Aguarda carregamento dos elementos
