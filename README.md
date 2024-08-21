@@ -18,22 +18,15 @@ Este guia fornece instruções para configurar e executar o projeto Cypress cria
    npm i
    ```
 
-3. **Para rodar os testes em modo headless (sem interface gráfica):**
-
-   ```bash
-   
-   npm run test
-
-   Obs: O teste end2endEmbarca.cy.js só vai passar caso o usuário ainda não tenha uma viagem aguardando pagamento.
-   Caso o usuário não tenha uma viagem aguardando pagamento não vai passar o teste OutraViagem.cy.js pois os fluxos são diferentes.
-   ```
-
-4. **Para abrir o Cypress Test Runner e visualizar os testes:**
+3. **Para abrir o Cypress Test Runner e visualizar os testes:**
 
    ```bash
    Digitar o código abaixo no Terminal.
 
    npx cypress open
+
+   Obs: O teste end2endEmbarca.cy.js só vai passar caso o usuário ainda não tenha uma viagem aguardando pagamento.
+   Caso o usuário não tenha uma viagem aguardando pagamento não vai passar o teste OutraViagem.cy.js pois os fluxos são diferentes.
    ```
 
 Seus testes Cypress estão configurados e prontos para serem executados.
