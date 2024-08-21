@@ -42,6 +42,7 @@ Seus testes Cypress estão configurados e prontos para serem executados.
    deverá ser executado para que o resultado seja **Passed**.
     ```
 
+![image](https://github.com/user-attachments/assets/b65c815e-5df6-4130-9560-89ed66a696cb)
 
 
 
