@@ -17,6 +17,7 @@ Este guia fornece instruções para configurar e executar o projeto Cypress cria
 
    npm i
    ```
+Seus testes Cypress estão configurados e prontos para serem executados.
 
 3. **Para abrir o Cypress Test Runner e visualizar os testes:**
 
@@ -29,7 +30,19 @@ Este guia fornece instruções para configurar e executar o projeto Cypress cria
    Caso o usuário não tenha uma viagem aguardando pagamento não vai passar o teste OutraViagem.cy.js pois os fluxos são diferentes.
    ```
 
-Seus testes Cypress estão configurados e prontos para serem executados.
+4. **Para executar o teste sem modo gráfico:**
+
+   ```bash
+   Digitar o código abaixo no Terminal.
+
+    npx cypress run --spec "cypress/e2e/embarca/OutraViagem.cy.js" 
+
+   Obs: Foi criado dois cenários, um que o cliente não possúi uma viagem aguardando pagamento (end2endEmbarca.cy.js) e outro que o cliente possúi uma viagem aguardando pagamento e deseja realizar o     
+   fluxo novamente para uma nova viagem (OutraViagem.cy.js) ambos estão na mesma pasta "cypress/e2e/embarca/" antes de executar os testes verificar a situação do cliente para verificar qual cenário     
+   deverá ser executado para que o resultado seja **Passed**.
+    ```
+
+
 
 
 # Sugestão de automação Mobile 
@@ -50,26 +63,29 @@ Validar redirecionamento para a página inicial ou tela de viagens.<br>
 ### Código Maestro:
 
 ```bash
-yaml
-- step: launch
-  app: com.embarcaai
-- step: tap
-  locator: id=email
-- step: type
-  locator: id=email
-  value: testeqa@embarca.ai
-- step: tap
-  locator: id=password
-- step: type
-  locator: id=password
-  value: Arca123
-- step: tap
-  locator: id=btn-login
-- step: wait
-  duration: 5000
-- step: assert
-  locator: id=home-screen
-  condition: exists
+# login.yaml
+
+appId: com.embacaaistage.exemplo
+
+steps:
+  - launchApp
+  - tapOn: "Entrar"
+  - inputText:
+      text: "testeqa@embarca.ai"
+      selector: "input_email" 
+  - inputText:
+      text: "Arca123"
+      selector: "input_password" 
+  - tapOn: "Entrar" 
+  - waitForElement:
+      timeout: 5000
+      selector: "TelaInicial"
+
+```
+Para executar o teste com o Maestro, você pode usar o comando:
+
+```bash
+maestro test login.yaml
 ```
 
 2. **Teste de Busca de Passagens:** <br>
@@ -85,38 +101,37 @@ Validar a exibição dos resultados.<br>
 ### Código Maestro:
 
 ```bash
-yaml
-- step: tap
-  locator: id=new-trip
-- step: tap
-  locator: id=origin
-- step: type
-  locator: id=origin
-  value: CURITIBA
-- step: tap
-  locator: xpath=//li[contains(text(), 'CURITIBA - PR')]
-- step: tap
-  locator: id=destination
-- step: type
-  locator: id=destination
-  value: CAIOBA
-- step: tap
-  locator: xpath=//li[contains(text(), 'CAIOBA - PR')]
-- step: tap
-  locator: id=departure-date
-- step: tap
-  locator: xpath=//date[@value='desired-date']
-- step: tap
-  locator: id=return-date
-- step: tap
-  locator: xpath=//date[@value='desired-date']
-- step: tap
-  locator: id=search-button
-- step: wait
-  duration: 5000
-- step: assert
-  locator: id=search-results
-  condition: exists
+
+# busca_passagem.yaml
+
+appId: com.embacaaistage.exemplo
+
+steps:
+  - runFlow: "login_flow.yaml"
+  
+  - tapOn: "Nova Viagem"
+  - inputText:
+      text: "Curitiba"
+      selector: "input_origem"
+  - inputText:
+      text: "São Paulo"
+      selector: "input_destino"
+  - tapOn: "Selecionar Data"
+  - inputDate:
+      date: "2024-09-15"
+      selector: "input_data_ida"
+  - inputDate:
+      date: "2024-09-20"
+      selector: "input_data_volta"
+  - tapOn: "Buscar"
+  - waitForElement:
+      selector: "ResultadoBusca"
+
+```
+Para executar o teste com o Maestro, você pode usar o comando:
+
+```bash
+maestro test busca_passagem.yaml
 ```
 
 3. **Teste de Reserva de Poltrona**
@@ -132,49 +147,56 @@ Preencher dados do passageiro.<br>
 ### Código Maestro:
 
 ```bash
-yaml
-- step: tap
-  locator: id=seat-selection
-- step: tap
-  locator: xpath=//seat[@number='3']
-- step: tap
-  locator: id=confirm-seat
-- step: tap
-  locator: id=return-seat-selection
-- step: tap
-  locator: xpath=//seat[@number='3']
-- step: tap
-  locator: id=confirm-return-seat
-- step: type
-  locator: id=passenger-name
-  value: Tiago QA
-- step: type
-  locator: id=passenger-birthdate
-  value: 24/12/1988
-- step: type
-  locator: id=passenger-doc
-  value: 83628308
-- step: type
-  locator: id=return-passenger-name
-  value: Tiago QA
-- step: type
-  locator: id=return-passenger-birthdate
-  value: 24/12/1988
-- step: type
-  locator: id=return-passenger-doc
-  value: 83628308
-- step: tap
-  locator: id=generate-pix
-- step: wait
-  duration: 5000
-- step: assert
-  locator: id=pix-qrcode
-  condition: visible
+#reserva_poltrona.yaml
+
+appId: com.embacaaistage.exemplo
+
+steps:
+  - runFlow: "login_flow.yaml"
+  - runFlow: "busca_passagens.yaml"
+
+  - tapOn: "seat-selection"
+  - tapOn:
+      selector: "xpath=//seat[@number='3']"
+  - tapOn: "confirm-seat"
+  - tapOn: "return-seat-selection"
+  - tapOn:
+      selector: "xpath=//seat[@number='3']"
+  - tapOn: "confirm-return-seat"
+  - inputText:
+      text: "Tiago QA"
+      selector: "passenger-name"
+  - inputText:
+      text: "24/12/1988"
+      selector: "passenger-birthdate"
+  - inputText:
+      text: "83628308"
+      selector: "passenger-doc"
+  - inputText:
+      text: "Tiago QA"
+      selector: "return-passenger-name"
+  - inputText:
+      text: "24/12/1988"
+      selector: "return-passenger-birthdate"
+  - inputText:
+      text: "83628308"
+      selector: "return-passenger-doc"
+  - tapOn: "generate-pix"
+  - waitFor:
+      timeout: 5000
+  - assertElementVisible: "pix-qrcode"
+
+
 ```
-  
+Para executar o teste com o Maestro, você pode usar o comando:
+
+```bash
+maestro test reserva_poltrona.yaml
+```
+
 ## Observações<br>
 Foram utilizados ids, xpaths, e informações fictícias sendo necessário inspecionar os elementos corretos para que os steps sejam executados como o esperado, acima foi apenas um exemplo de como automatizar os fluxos dentro do app. <br>
-Esse fluxo automatizados com Maestro ajuda a garantir que o processo de compra no aplicativo Embarca.ai funcione conforme o esperado em diferentes cenários.
+Esse fluxo automatizados com Maestro ajuda a garantir que o processo de compra no aplicativo Embarca.ai funcione conforme o esperado em diferentes dispositivos e sistemas operacionais.
 
 ### Agradeço a oportunidade de realizar o desafio, espero ter atendido as necessidades para pleitear a vaga, disponibilidade para início imediato.
 ### Segue abaixo meu Perfil no LinkedIn. <br>
